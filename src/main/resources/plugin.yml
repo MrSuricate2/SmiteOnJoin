@@ -1,0 +1,5 @@
+name: SmiteOnJoin
+version: '${project.version}'
+main: fr.mrsuricate.smiteonjoin.Main
+api-version: 1.19
+authors: [ MrSuricate ]
