@@ -3,7 +3,6 @@ package fr.mrsuricate.smiteonjoin;
 import fr.mrsuricate.smiteonjoin.managers.MFiles;
 import fr.mrsuricate.smiteonjoin.managers.MListeners;
 import fr.mrsuricate.smiteonjoin.managers.MLoad;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -15,9 +14,9 @@ public final class Main extends JavaPlugin {
     private static Main instance;
 
     public File fileConfig = new File(getDataFolder().getPath() + "/config.yml");
-    public FileConfiguration fileConfigConfig;
     public File fileMessage = new File(getDataFolder().getPath() + "/message.yml");
-    public FileConfiguration fileConfigMessage;
+
+    public boolean placeholder = false;
 
     public static Main getInstance() {
         return instance;
@@ -25,7 +24,7 @@ public final class Main extends JavaPlugin {
 
     //Manager
     private MLoad loadManager;
-    private MFiles managerFiles;
+    private MFiles filesManager;
     private MListeners eventsManager;
 
 
@@ -36,7 +35,7 @@ public final class Main extends JavaPlugin {
 
         loadManager = new MLoad();
         eventsManager = new MListeners();
-        managerFiles = new MFiles();
+        filesManager = new MFiles();
 
         loadManager.pluginLoad();
     }
@@ -46,16 +45,12 @@ public final class Main extends JavaPlugin {
         loadManager.pluginUnLoad();
     }
 
-    public MLoad getLoadManager() {
-        return loadManager;
-    }
-
     public MListeners getEventsManager() {
         return eventsManager;
     }
 
-    public MFiles getManagerFiles() {
-        return managerFiles;
+    public MFiles getFilesManager() {
+        return filesManager;
     }
 
     public void logConsole(Level level, String msg) {

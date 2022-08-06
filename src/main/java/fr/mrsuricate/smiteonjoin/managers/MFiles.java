@@ -1,7 +1,6 @@
 package fr.mrsuricate.smiteonjoin.managers;
 
 import fr.mrsuricate.smiteonjoin.Main;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,20 +12,38 @@ public class MFiles {
 
     private final Main main = Main.getInstance();
 
-    public void initFiles() {}
+    public void initFiles() {
+        ressourceSetup("","config.yml", false);
+        ressourceSetup("","message.yml", false);
+    }
 
-    public void setupResource(String fileName, boolean reset) {
-        InputStream in = main.getResource(fileName);
+    public void ressourceSetup(String folder, String fileName, boolean reset) {
+        InputStream in;
+        if (folder.isEmpty()) {
+            in = main.getResource(fileName);
+        } else {
+            in = main.getResource(folder + "/" + fileName);
+        }
+
         if (in == null) {
             throw new IllegalArgumentException("La ressource intégrée '" + fileName + "' ne peut être trouvé !");
         }
-        File outDir = new File(main.getDataFolder(),"");
-        if(!outDir.exists()) {
+        File outDir;
+        if (folder.isEmpty()) {
+            outDir = new File(main.getDataFolder(), "");
+        } else {
+            outDir = new File(main.getDataFolder() + "/" + folder, "");
+        }
+        if (!outDir.exists()) {
             outDir.mkdirs();
         }
-        if(reset) {
-            File outFile = new File(main.getDataFolder(), fileName);
-            outFile.exists();
+        File outFile;
+        if (folder.isEmpty()) {
+            outFile = new File(main.getDataFolder(), fileName);
+        } else {
+            outFile = new File(main.getDataFolder() + "/" + folder, fileName);
+        }
+        if (!outFile.exists() || reset) {
             try {
                 OutputStream out = new FileOutputStream(outFile);
                 byte[] buf = new byte['?'];
@@ -36,11 +53,12 @@ public class MFiles {
                 }
                 out.close();
                 in.close();
-                return;
             } catch (Exception e) {
                 main.logConsole(Level.WARNING, "Fichier " + fileName + " n'a pas été trouvé !");
             }
         }
+
+
     }
 
 }

@@ -1,6 +1,7 @@
 package fr.mrsuricate.smiteonjoin.listerners;
 
 import fr.mrsuricate.smiteonjoin.Main;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -21,9 +22,13 @@ public class LOnJoin implements Listener {
         YamlConfiguration yamlConfiguration1 = YamlConfiguration.loadConfiguration(main.fileMessage);
         if (player.hasPermission("smiteonjoin.enable") || player.isOp()){
             player.getWorld().strikeLightningEffect(player.getLocation());
-        }
-        if (yamlConfiguration.getBoolean("SmiteOnJoin.message")){
-            Bukkit.broadcastMessage(Objects.requireNonNull(yamlConfiguration1.getString("SmiteOnJoin.message")));
+            if (yamlConfiguration.getBoolean("SmiteOnJoin.message")){
+                String message = Objects.requireNonNull(yamlConfiguration1.getString("SmiteOnJoin.message")).replace("&","§");
+                if (main.placeholder){
+                    message = PlaceholderAPI.setPlaceholders(player,message);
+                }
+                Bukkit.broadcastMessage(message);
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package fr.mrsuricate.smiteonjoin.managers;
 
 import fr.mrsuricate.smiteonjoin.Main;
+import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
 
@@ -15,6 +16,14 @@ public class MLoad {
         main.logConsole(Level.INFO, "Chargement du plugin en cours...");
         main.logConsole(Level.INFO, "Chargement des Listeners...");
         main.getEventsManager().initEvents();
+        main.logConsole(Level.INFO, "Chargement des Fichiers...");
+        main.getFilesManager().initFiles();
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            main.logConsole(Level.INFO, "Chargement de PlaceholderAPI...");
+            main.placeholder = true;
+        } else {
+            main.logConsole(Level.WARNING, "Impossible de trouver PlaceholderAPI ! Ce plugin peut être nécessaire.");
+        }
         main.logConsole(Level.INFO, "----");
 
         long end_timer = System.currentTimeMillis();
